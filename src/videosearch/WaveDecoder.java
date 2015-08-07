@@ -54,11 +54,12 @@ public class WaveDecoder {
 
 			System.arraycopy(fft.getSpectrum(), 0, spectrum, 0, spectrum.length);
 //	        System.out.println("Spectrum:"+Arrays.toString(spectrum));
-			float max = 0;
-			int fq = 0;
+			float max = -1;
+			int fq = -1;
 			for (int i = 0; i < spectrum.length; i++) {
-				if (spectrum[i] > max) {
-					max = spectrum[i];
+				float v = samples[i]*samples[i]+spectrum[i]*spectrum[i];
+				if (v > max) {
+					max = v;
 					fq = i;
 				}
 			}

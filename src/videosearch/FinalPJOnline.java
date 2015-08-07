@@ -17,13 +17,13 @@ public class FinalPJOnline {
     private static int[] contrastpercent_table = {0,1,30,50,80,100};
     private static int[] surftable = {0, 150, 1000, 5000, 10000, 20000, 30000};
     private static int[] surfpercent_table = {0, 1, 35, 55, 80, 90, 100};
-    private static int[] audiotable = {0, 550, 1200, 2300, 2800, 4000};
-    private static int[] audiopercent_table = {0, 1, 50, 80, 90, 100};
+    private static int[] audiotable = {0, 750, 1200, 2300, 2800, 4000};
+    private static int[] audiopercent_table = {0, 10, 30, 60, 80, 100};
     private static int[] colorhisttable = {0, 100, 1000, 5000, 20000, 40000, 80000, 120000};
     private static int[] colorhistpercent_table = {0, 1, 10, 30, 60, 80, 90, 100};
 
 
-    public static void runOffline(){
+    public static void runOnline(){
 
         List<String> imageFiles = new ArrayList<String>();
         File dir = new File(Constant.Query_DIR_PATH);
@@ -159,9 +159,10 @@ public class FinalPJOnline {
                 dbProcessor.storeWindowResultAudio(i + 1, Constant.CATEGORY[k], windowAudioSimilarity);
                 dbProcessor.storeWindowResultImage(i + 1, Constant.CATEGORY[k], (windowContrastSimilarity + windowSurfSimilarity + windowColorHistSimilarity) / 3);
                 dbProcessor.storeWindowResultMotion(i + 1, Constant.CATEGORY[k], windowMotionSimilarity);
-                categorySimilarity += windowSimilarity;
+                categorySimilarity += windowSimilarity*windowSimilarity;
+//                categorySimilarity += windowSimilarity;
             }
-            categorySimilarity = categorySimilarity/loopSizePerFile;
+            categorySimilarity = Math.sqrt(categorySimilarity/loopSizePerFile);
             CategoryResult categoryResult = new CategoryResult();
             categoryResult.setCategory(Constant.CATEGORY[k]);
             categoryResult.setSimilarity(categorySimilarity);
